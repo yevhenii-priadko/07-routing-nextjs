@@ -1,6 +1,6 @@
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { fetchNotes } from '@/lib/api'
-import NotesClient from '../../Notes.client' // Перевірте, чи правильний шлях до вашого клієнтського компонента
+import NotesClient from './Notes.client' // Перевірте, чи правильний шлях до вашого клієнтського компонента
 
 interface NotesFilterPageProps {
   params: Promise<{ slug: string[] }>

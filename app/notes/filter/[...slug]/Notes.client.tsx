@@ -10,7 +10,7 @@ import Pagination from '@/components/Pagination/Pagination'
 import SearchBox from '@/components/SearchBox/SearchBox'
 import Modal from '@/components/Modal/Modal'
 import NoteForm from '@/components/NoteForm/NoteForm'
-import css from './notes.module.css'
+import css from '../../notes.module.css'
 import { fetchNotes } from '@/lib/api'
 
 export default function NotesClient() {
