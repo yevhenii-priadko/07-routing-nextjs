@@ -16,8 +16,8 @@ import { fetchNotes } from '@/lib/api'
 export default function NotesClient() {
   const params = useParams()
 
-  const tagFromUrl = Array.isArray(params?.tag) ? params.tag[0] : params?.tag
-  const currentTag = tagFromUrl === 'all' ? undefined : tagFromUrl
+  const slugFromUrl = Array.isArray(params?.slug) ? params.slug[0] : params?.slug
+  const currentTag = slugFromUrl === 'all' ? undefined : slugFromUrl
 
   // Локальні стейти
   const [localSearch, setLocalSearch] = useState<string>('')

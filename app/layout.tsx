@@ -22,8 +22,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal, // 1. ДОДАЛИ слот модалки як пропс від Next.js
 }: Readonly<{
   children: React.ReactNode
+  modal: React.ReactNode // 2. Прописали типи для TypeScript
 }>) {
   return (
     <html lang='en' className={`${geistSans.variable} ${geistMono.variable}`}>
@@ -31,6 +33,10 @@ export default function RootLayout({
         <TanStackProvider>
           <Header />
           <main> {children}</main>
+
+          {/* 3. РЕНДЕРИМО модалку всередині провайдера під головним контентом */}
+          {modal}
+
           <Footer />
         </TanStackProvider>
       </body>

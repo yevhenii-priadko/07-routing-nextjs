@@ -3,7 +3,7 @@ import { fetchNotes } from '@/lib/api'
 import NotesClient from '../../Notes.client' // Перевірте, чи правильний шлях до вашого клієнтського компонента
 
 interface NotesFilterPageProps {
-  params: Promise<{ tag?: string[] }>
+  params: Promise<{ slug: string[] }>
 }
 
 export default async function NotesFilterPage({ params }: NotesFilterPageProps) {
@@ -11,7 +11,7 @@ export default async function NotesFilterPage({ params }: NotesFilterPageProps) 
   const resolvedParams = await params
 
   // params.tag — це масив через catch-all [[...tag]]. Беремо перший елемент безпечно.
-  const tagFromUrl = resolvedParams.tag?.[0]
+  const tagFromUrl = resolvedParams.slug?.[0]
 
   // Якщо в URL написано 'all' або тег відсутній, передаємо undefined на бекенд (за ТЗ)
   const currentTag = tagFromUrl === 'all' ? undefined : tagFromUrl

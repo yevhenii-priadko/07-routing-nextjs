@@ -5,17 +5,15 @@ import { useEffect, useState } from 'react'
 import { fetchNoteById } from '@/lib/api'
 import type { Note } from '@/types/note'
 import Modal from '@/components/Modal/Modal'
-import css from '@/app/notes/@modal/(.)[id]/NotePreviewModal.module.css'
+import css from './NotePreviewModal.module.css'
 
 export default function NotePreviewModal() {
   const router = useRouter()
   const params = useParams()
 
-  // Безопасно вытаскиваем строку ID заметки
   const rawId = params?.id || (Array.isArray(params?.tag) ? params.tag : params?.tag)
   const id = typeof rawId === 'string' ? rawId : ''
 
-  // Изначально данных нет, поэтому состояние равно null
   const [note, setNote] = useState<Note | null>(null)
 
   useEffect(() => {

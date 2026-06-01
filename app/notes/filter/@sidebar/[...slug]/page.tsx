@@ -5,7 +5,7 @@ import Link from 'next/link'
 const AVAILABLE_TAGS: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping']
 
 interface SidebarNotesProps {
-  params: Promise<{ tag?: string[] }>
+  params: Promise<{ slug?: string[] }>
 }
 
 export default async function SidebarNotes({ params }: SidebarNotesProps) {
