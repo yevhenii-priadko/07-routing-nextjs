@@ -18,6 +18,7 @@ export default function NotePreviewClient({ id }: NotePreviewClientProps) {
   const { data: note, isLoading } = useQuery<Note>({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
   })
 
   const handleClose = () => {
