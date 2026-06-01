@@ -15,9 +15,22 @@ const headers = {
   Authorization: `Bearer ${myKey}`,
 }
 
-export async function fetchNotes(search: string, page: number): Promise<ResponseNotes> {
+export async function fetchNotes(
+  search: string,
+  page: number,
+  tag?: string
+): Promise<ResponseNotes> {
+  const params: { search: string; page: number; perPage: number; tag?: string } = {
+    search,
+    page,
+    perPage: 10,
+  }
+
+  if (tag && tag !== 'all') {
+    params.tag = tag
+  }
   const response = await axios.get<ResponseNotes>(BASE_URL, {
-    params: { search, page, perPage: 10 },
+    params,
     headers,
   })
 
