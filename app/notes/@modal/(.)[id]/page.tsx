@@ -4,7 +4,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { fetchNoteById } from '@/lib/api'
 import type { Note } from '@/types/note'
-import Modal from '../../../../components/Modal/Modal'
+import Modal from '@/components/Modal/Modal'
 import css from './NotePreview.module.css'
 
 export default function NotePreviewModal() {
@@ -23,7 +23,7 @@ export default function NotePreviewModal() {
 
     fetchNoteById(id)
       .then((data: Note) => {
-        setNote(data) // Записываем данные, когда они пришли
+        setNote(data)
       })
       .catch((err: unknown) => {
         console.error('Помилка завантаження нотатки:', err)
@@ -36,10 +36,7 @@ export default function NotePreviewModal() {
 
   return (
     <Modal isOpen={true} onClose={handleClose}>
-      {/* 
-        Декларативная проверка: если данных еще нет (note === null), 
-        показываем надпись загрузки. Никаких стейтов и эффектов!
-      */}
+      {}
       {!note ? (
         <p>Loading details...</p>
       ) : (
