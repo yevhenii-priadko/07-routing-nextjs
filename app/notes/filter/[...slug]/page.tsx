@@ -27,7 +27,7 @@ export default async function NotesFilterPage({ params }: NotesFilterPageProps) 
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient />
+      <NotesClient tag={currentTag} />
     </HydrationBoundary>
   )
 }

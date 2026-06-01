@@ -1,43 +1,34 @@
 'use client'
 
-import { useRouter, useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
 import { fetchNoteById } from '@/lib/api'
 import type { Note } from '@/types/note'
-import Modal from '@/components/Modal/Modal'
+import Modal from '@/components/Modal/Modal' // Перевірте шлях до вашої модалки
 import css from './NotePreviewModal.module.css'
 
-export default function NotePreviewModal() {
+interface NotePreviewClientProps {
+  id: string
+}
+
+export default function NotePreviewClient({ id }: NotePreviewClientProps) {
   const router = useRouter()
-  const params = useParams()
 
-  const rawId = params?.id || (Array.isArray(params?.tag) ? params.tag : params?.tag)
-  const id = typeof rawId === 'string' ? rawId : ''
-
-  const [note, setNote] = useState<Note | null>(null)
-
-  useEffect(() => {
-    if (!id || id === 'all') return
-
-    fetchNoteById(id)
-      .then((data: Note) => {
-        setNote(data)
-      })
-      .catch((err: unknown) => {
-        console.error('Помилка завантаження нотатки:', err)
-      })
-  }, [id])
+  // Використовуємо хук useQuery, який автоматично візьме дані з серверного кешу
+  const { data: note, isLoading } = useQuery<Note>({
+    queryKey: ['note', id],
+    queryFn: () => fetchNoteById(id),
+  })
 
   const handleClose = () => {
-    router.back()
+    router.back() // Повертаємося на попередню сторінку фільтру
   }
 
   return (
     <Modal isOpen={true} onClose={handleClose}>
-      {}
-      {!note ? (
-        <p>Loading details...</p>
-      ) : (
+      {isLoading && <p>Loading details...</p>}
+
+      {!isLoading && note && (
         <div className={css.container}>
           <div className={css.item}>
             <div className={css.header}>
@@ -63,6 +54,8 @@ export default function NotePreviewModal() {
           </div>
         </div>
       )}
+
+      {!isLoading && !note && <p>Note data could not be loaded.</p>}
     </Modal>
   )
 }

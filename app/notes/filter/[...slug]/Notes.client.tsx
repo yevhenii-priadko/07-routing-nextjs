@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useDebouncedCallback } from 'use-debounce'
-import { useParams } from 'next/navigation'
 
 import NoteList from '@/components/NoteList/NoteList'
 import Pagination from '@/components/Pagination/Pagination'
@@ -13,34 +12,32 @@ import NoteForm from '@/components/NoteForm/NoteForm'
 import css from '../../notes.module.css'
 import { fetchNotes } from '@/lib/api'
 
-export default function NotesClient() {
-  const params = useParams()
+interface NotesClientProps {
+  tag?: string // Значення тега (currentTag), передане з серверного компонента
+}
 
-  const slugFromUrl = Array.isArray(params?.slug) ? params.slug[0] : params?.slug
-  const currentTag = slugFromUrl === 'all' ? undefined : slugFromUrl
-
-  // Локальні стейти
+export default function NotesClient({ tag }: NotesClientProps) {
+  // Локальні стейти для керування параметрами пошуку та пагінації
   const [localSearch, setLocalSearch] = useState<string>('')
   const [search, setSearch] = useState<string>('')
   const [page, setPage] = useState<number>(1)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  // ЗБЕРІГАЄМО ПОПЕРЕДНІЙ ТЕГ ДЛЯ СКИДАННЯ СТАНУ БЕЗ EFFECT
-  const [prevTag, setPrevTag] = useState<string | undefined>(currentTag)
+  // ЗБЕРІГАЄМО ПОПЕРЕДНІЙ ТЕГ З ПРОПСІВ ДЛЯ СКИДАННЯ СТАНУ ПІД ЧАС РЕНДЕРУ
+  const [prevTag, setPrevTag] = useState<string | undefined>(tag)
 
-  // Якщо тег в URL змінився, ми синхронно оновлюємо стейти ПРЯМО ПІД ЧАС РЕНДЕРУ.
-  // Це запобігає каскадним рендерам і повністю прибирає помилку!
-  if (currentTag !== prevTag) {
-    setPrevTag(currentTag)
+  // Якщо проп tag, який прийшов з сервера, змінився — синхронно скидаємо локальні стані
+  if (tag !== prevTag) {
+    setPrevTag(tag)
     setPage(1)
     setSearch('')
     setLocalSearch('')
   }
 
-  // Хук React Query
+  // Хук React Query: тепер використовує проп tag прямо у queryKey та queryFn
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', search, page, currentTag],
-    queryFn: () => fetchNotes(search, page, currentTag),
+    queryKey: ['notes', search, page, tag],
+    queryFn: () => fetchNotes(search, page, tag),
     placeholderData: keepPreviousData,
   })
 
