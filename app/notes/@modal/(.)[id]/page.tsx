@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { fetchNoteById } from '@/lib/api'
 import type { Note } from '@/types/note'
 import Modal from '@/components/Modal/Modal'
-import css from './NotePreview.module.css'
+import css from '@/app/notes/@modal/(.)[id]/NotePreviewModal.module.css'
 
 export default function NotePreviewModal() {
   const router = useRouter()
